@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seq2seq-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: demo
+        image: gitlab-registry.nautilus.optiputer.net/prp/jupyterlab
+        command:
+        - "python"
+        args:
+        - "/opt/repo/Nautilus-seq2seq/main.py"
+        volumeMounts:
+        - name: git-repo
+          mountPath: /opt/repo
+        resources:
+          limits:
+            memory: 32Gi
+            nvidia.com/gpu: "1"
+          requests:
+            memory: 24Gi
+            nvidia.com/gpu: "1"    
+      initContainers:
+      - name: init-clone-repo
+        image: alpine/git
+        args:
+          - clone
+          - --single-branch
+          - https://gitlab.nautilus.optiputer.net/raulgiovannymartinez/Nautilus-seq2seq
+          - /opt/repo/Nautilus-seq2seq
+        volumeMounts:
+          - name: git-repo
+            mountPath: /opt/repo
+      volumes:
+      - name: git-repo
+        emptyDir: {}
+      restartPolicy: Never
+  backoffLimit: 5
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: gpu-type
+            operator: In
+            values:
+            - Tesla V100
