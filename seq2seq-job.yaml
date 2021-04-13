@@ -47,5 +47,5 @@ spec:
               - key: gpu-type
                 operator: In
                 values:
-                - V100
-  backoffLimit: 5
+                - 2080Ti
+  backoffLimit: 3
