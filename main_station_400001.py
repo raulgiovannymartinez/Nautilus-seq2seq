@@ -443,6 +443,7 @@ results_dict = {
     # 'model_state_dict': model.state_dict(),
     'train_rmse': loss[0],
     'valid_rmse': loss[1],
+    'test_rmse': test_rmse,
     'min_valid_loss': min_valid_loss
     # 'preds':preds
 }
