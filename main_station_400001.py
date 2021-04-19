@@ -1,9 +1,9 @@
-from __future__ import unicode_literals, print_function, division
+# from __future__ import unicode_literals, print_function, division
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from torch.utils import data
@@ -12,15 +12,15 @@ from os import listdir
 from os.path import join, abspath
 # import itertools
 # import re
-import random
+# import random
 import time
 from torch.autograd import Variable
-from scipy.signal import tukey
+# from scipy.signal import tukey
 from torch.utils import data
-from tqdm.notebook import tqdm
+# from tqdm.notebook import tqdm
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-import warnings
-warnings.filterwarnings("ignore")
+# import warnings
+# warnings.filterwarnings("ignore")
 
 print(device)
 
@@ -264,7 +264,8 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
     best_preds = 0
     min_valid_loss = 1000
     
-    for i in tqdm(range(200)):
+    # for i in tqdm(range(200)):
+    for i in range(200):
         
         print(i, datetime.now())
         
@@ -372,6 +373,8 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
 
 ############# Main
 
+print('Code started', datetime.now())
+
 # base_dir = r'C:\Users\rmartinez4\Box\Personal Git\dse-capstone\seq2seq_example\data_traffic'
 base_dir = '/models-vol/'
 
@@ -379,6 +382,7 @@ filename = 'traffic_bayArea_station_400001.pkl'
 
 # read tensor
 with open(base_dir + filename, "rb") as fout:
+# with open(join(base_dir, filename), "rb") as fout:
     c_time_series = pkl.load(fout)
 
 sample_size = c_time_series.shape[0]
@@ -389,6 +393,12 @@ test_size = sample_size // 5
 train_valid_size = test_size * 4
 training_size = test_size * 7//2
 validation_size = test_size * 1//2
+
+print(' sample_size', sample_size, '\n',
+      'train_valid_size', train_valid_size, '\n',
+      'training_size', training_size, '\n',
+      'validation_size', validation_size, '\n',
+      'test_size', test_size)
 
 # X_train = c_time_series[:train_valid_size,:pred_size,:]
 # Y_train = c_time_series[:train_valid_size,pred_size:,:]
@@ -443,9 +453,10 @@ results_dict = {
 # save results dict and model
 file_id = filename.split('.')[0]
 with open(base_dir + file_id + '_results_dict.pkl', 'wb') as handle:
+# with open(join(base_dir, file_id + '_results_dict.pkl'), 'wb') as handle:
     pkl.dump(results_dict, handle, protocol=pkl.HIGHEST_PROTOCOL)
 
 torch.save(model, base_dir + file_id + '_model.pth')
-
+# torch.save(model, join(base_dir, file_id + '_model.pth'))
 
 
