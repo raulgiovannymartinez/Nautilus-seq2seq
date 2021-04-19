@@ -440,10 +440,11 @@ results_dict = {
     'dropout_rate': dropout_rate,
     'num_layers':num_layers,
     'hidden_dim': hidden_dim,
-    'model_state_dict': model.state_dict(),
-    'loss': loss,
-    'min_valid_loss': min_valid_loss,
-    'preds':preds
+    # 'model_state_dict': model.state_dict(),
+    'train_rmse': loss[0],
+    'valid_rmse': loss[1],
+    'min_valid_loss': min_valid_loss
+    # 'preds':preds
 }
 
 
