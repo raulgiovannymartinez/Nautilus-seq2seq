@@ -10,8 +10,8 @@ from torch.utils import data
 import os
 from os import listdir
 from os.path import join, abspath
-import itertools
-import re
+# import itertools
+# import re
 import random
 import time
 from torch.autograd import Variable
@@ -22,19 +22,21 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 import warnings
 warnings.filterwarnings("ignore")
 
+print(device)
 
-import json
-import sqlalchemy as sal
-import getpass
-import pandas as pd
-from urllib.request import urlopen
+
+# import json
+from datetime import datetime
+# import sqlalchemy as sal
+# import getpass
+# from urllib.request import urlopen
 import pickle as pkl
 
-import boto3
-import io
+# import boto3
+# import io
 
-from dotenv import load_dotenv
-load_dotenv(verbose=True)
+# from dotenv import load_dotenv
+# load_dotenv(verbose=True)
 
 
 ############# Seq2seq functions
@@ -263,6 +265,9 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
     min_valid_loss = 1000
     
     for i in tqdm(range(200)):
+        
+        print(i, datetime.now())
+        
         start = time.time()
         scheduler.step()
         train_generator = data.DataLoader(train_set, batch_size = batch_size, shuffle = True)
@@ -307,93 +312,95 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
 
 ############# Supporting functions for S3
 
-def aws_session(region_name='us-west-2'):
-    return boto3.session.Session(aws_access_key_id='ASIAT6C7QCXQZ6R6YKRU',
-                                aws_secret_access_key='Dbra3CydVtifiqvXtNZDgt+dY3PhzNBJ2I7vr8J1',
-                                region_name=region_name)
+# def aws_session(region_name='us-west-2'):
+#     return boto3.session.Session(aws_access_key_id='ASIAT6C7QCXQZ6R6YKRU',
+#                                 aws_secret_access_key='Dbra3CydVtifiqvXtNZDgt+dY3PhzNBJ2I7vr8J1',
+#                                 region_name=region_name)
 
 
-def make_bucket(name, acl):
-    session = aws_session()
-    s3_resource = session.resource('s3')
-    return s3_resource.create_bucket(Bucket=name, ACL=acl)
+# def make_bucket(name, acl):
+#     session = aws_session()
+#     s3_resource = session.resource('s3')
+#     return s3_resource.create_bucket(Bucket=name, ACL=acl)
 
 
-def upload_file_to_bucket(bucket_name, file_path):
-    session = aws_session()
-    s3_resource = session.resource('s3')
-    file_dir, file_name = os.path.split(file_path)
+# def upload_file_to_bucket(bucket_name, file_path):
+#     session = aws_session()
+#     s3_resource = session.resource('s3')
+#     file_dir, file_name = os.path.split(file_path)
 
-    bucket = s3_resource.Bucket(bucket_name)
-    bucket.upload_file(
-      Filename=file_path,
-      Key=file_name,
-      ExtraArgs={'ACL': 'public-read'}
-    )
+#     bucket = s3_resource.Bucket(bucket_name)
+#     bucket.upload_file(
+#       Filename=file_path,
+#       Key=file_name,
+#       ExtraArgs={'ACL': 'public-read'}
+#     )
 
-    s3_url = f"https://{bucket_name}.s3.amazonaws.com/{file_name}"
-    return s3_url
+#     s3_url = f"https://{bucket_name}.s3.amazonaws.com/{file_name}"
+#     return s3_url
 
 
-def download_file_from_bucket(bucket_name, s3_key, dst_path):
-    session = aws_session()
-    s3_resource = session.resource('s3')
-    bucket = s3_resource.Bucket(bucket_name)
-    bucket.download_file(Key=s3_key, Filename=dst_path)
+# def download_file_from_bucket(bucket_name, s3_key, dst_path):
+#     session = aws_session()
+#     s3_resource = session.resource('s3')
+#     bucket = s3_resource.Bucket(bucket_name)
+#     bucket.download_file(Key=s3_key, Filename=dst_path)
  
 
-def upload_data_to_bucket(bytes_data, bucket_name, s3_key):
-    session = aws_session()
-    s3_resource = session.resource('s3')
-    obj = s3_resource.Object(bucket_name, s3_key)
-    obj.put(ACL='private', Body=bytes_data)
+# def upload_data_to_bucket(bytes_data, bucket_name, s3_key):
+#     session = aws_session()
+#     s3_resource = session.resource('s3')
+#     obj = s3_resource.Object(bucket_name, s3_key)
+#     obj.put(ACL='private', Body=bytes_data)
 
-    s3_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
-    return s3_url
+#     s3_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
+#     return s3_url
 
 
-def download_data_from_bucket(bucket_name, s3_key):
-    session = aws_session()
-    s3_resource = session.resource('s3')
-    obj = s3_resource.Object(bucket_name, s3_key)
-    io_stream = io.BytesIO()
-    obj.download_fileobj(io_stream)
+# def download_data_from_bucket(bucket_name, s3_key):
+#     session = aws_session()
+#     s3_resource = session.resource('s3')
+#     obj = s3_resource.Object(bucket_name, s3_key)
+#     io_stream = io.BytesIO()
+#     obj.download_fileobj(io_stream)
 
-    io_stream.seek(0)
-    data = io_stream.read().decode('utf-8')
+#     io_stream.seek(0)
+#     data = io_stream.read().decode('utf-8')
 
-    return data
+#     return data
 
 
 ############# Main
 
+# base_dir = r'C:\Users\rmartinez4\Box\Personal Git\dse-capstone\seq2seq_example\data_traffic'
+base_dir = '/models-vol/'
 
-# filename = 'traffic_bayArea_station_allStations_12pts.pkl'
-# # read tensor
-# with open(filename, "rb") as fout:
-#     c_time_series = pkl.load(fout)
+filename = 'traffic_bayArea_station_400001.pkl'
 
+# read tensor
+with open(base_dir + filename, "rb") as fout:
+    c_time_series = pkl.load(fout)
 
-# sample_size = c_time_series.shape[0]
-# segment_size = c_time_series.shape[1]
-# pred_size = int(segment_size/2)
+sample_size = c_time_series.shape[0]
+segment_size = c_time_series.shape[1]
+pred_size = int(segment_size/2)
 
-# test_size = sample_size // 4
-# train_valid_size = test_size * 3
-# training_size = test_size * 2
-# validation_size = test_size * 1
+test_size = sample_size // 5
+train_valid_size = test_size * 4
+training_size = test_size * 7//2
+validation_size = test_size * 1//2
 
 # X_train = c_time_series[:train_valid_size,:pred_size,:]
 # Y_train = c_time_series[:train_valid_size,pred_size:,:]
-# sample_size, pred_length, feature_count = X_train.shape
+# x_train_size, pred_length, feature_count = X_train.shape
 
 # X_test = c_time_series[training_size:training_size+test_size,:pred_size,:]
 # Y_test = c_time_series[training_size:training_size+test_size,pred_size:,:]
 
-# X_all = c_time_series[:train_valid_size+test_size,:pred_size,:]
-# Y_all = c_time_series[:train_valid_size+test_size,pred_size:,:]
+X_all = c_time_series[:train_valid_size+test_size,:pred_size,:]
+Y_all = c_time_series[:train_valid_size+test_size,pred_size:,:]
 
-# X, Y, (avg, std) = scale_data(X_all, Y_all, out_pos = 0, return_current_avg_std = True)
+X, Y, (avg, std) = scale_data(X_all, Y_all, out_pos = 0, return_current_avg_std = True)
 
 
 learning_rate = 0.01
@@ -403,7 +410,6 @@ hidden_dim = 128
 
 input_steps = segment_size
 output_steps = segment_size
-# input_size = 2
 input_size = 1
 output_size = 1
 
@@ -414,28 +420,32 @@ test_idx = list(range(train_valid_size, train_valid_size + test_size))
 encoder = Encoder(input_size, hidden_dim, num_layers, dropout_rate)
 decoder = Decoder(output_size, hidden_dim, num_layers, dropout_rate)
 model = Seq2Seq(encoder, decoder, device).to(device)
+
 model, loss, preds, min_valid_loss, test_rmse = train_model(
     model, X, Y, learning_rate, output_steps = output_steps, batch_size = 64,
     train_idx = train_idx, valid_idx = valid_idx, test_idx = test_idx, test=True)
 
-print({
+results_dict = {
     'learning_rate': learning_rate,
     'dropout_rate': dropout_rate,
     'num_layers':num_layers,
     'hidden_dim': hidden_dim,
-#     'model_state_dict': model.state_dict(),
-#     'loss': loss,
+    'model_state_dict': model.state_dict(),
+    'loss': loss,
     'min_valid_loss': min_valid_loss,
-#     'preds':preds,
-})
+    'preds':preds
+}
 
 
-torch.save(model, filename.split('.')[0]+'_model.pth')
+# read saved model
+# model = torch.load(r'C:\Users\rmartinez4\Box\Personal Git\dse-capstone\seq2seq_example\Nautilus\models\traffic_bayArea_station_400001_model.pth', map_location=torch.device('cpu'))
 
+# save results dict and model
+file_id = filename.split('.')[0]
+with open(base_dir + file_id + '_results_dict.pkl', 'wb') as handle:
+    pkl.dump(results_dict, handle, protocol=pkl.HIGHEST_PROTOCOL)
 
-bytes_data = r'C:\Users\rmartinez4\Box\Personal Git\dse-capstone\seq2seq_example\Nautilus\models\traffic_bayArea_station_400001_model.pth'
-s3_url = upload_data_to_bucket(bytes_data, 'dse-grp3-capstone-data', '/processed_data/models/traffic_bayArea_station_400001_model.pth')
+torch.save(model, base_dir + file_id + '_model.pth')
 
-print(s3_url)
 
 
