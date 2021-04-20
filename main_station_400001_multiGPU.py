@@ -18,6 +18,7 @@ from torch.autograd import Variable
 # from scipy.signal import tukey
 from torch.utils import data
 from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.distributed as dist
 
 # from tqdm.notebook import tqdm
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -431,8 +432,16 @@ test_idx = list(range(train_valid_size, train_valid_size + test_size))
 
 encoder = Encoder(input_size, hidden_dim, num_layers, dropout_rate)
 decoder = Decoder(output_size, hidden_dim, num_layers, dropout_rate)
-model = Seq2Seq(encoder, decoder, device).to(device)
-model = DDP(model)
+
+# to enable multi GPU training
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+print('rank {} and world size {}'.format(rank, world_size))
+
+dist.init_process_group("gloo", rank=rank, world_size=world_size)
+print(rank, world_size)
+model = Seq2Seq(encoder, decoder, rank).to(rank)
+model = DDP(model, device_ids=[rank])
 
 model, loss, preds, min_valid_loss, test_rmse = train_model(
     model, X, Y, learning_rate, output_steps = output_steps, batch_size = 64,
