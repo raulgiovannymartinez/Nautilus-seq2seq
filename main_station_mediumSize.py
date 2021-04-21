@@ -22,7 +22,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # import warnings
 # warnings.filterwarnings("ignore")
 
-print(device)
+print(device, flush=True)
 
 
 # import json
@@ -267,7 +267,7 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
     # for i in tqdm(range(200)):
     for i in range(200):
         
-        print(i, datetime.now())
+        print(i, datetime.now(), flush=True)
         
         start = time.time()
         scheduler.step()
@@ -302,7 +302,7 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
             
     end = time.time()       
     print(("Epoch %d:"%(i+1)), ("Loss: %f; "%train_rmse[-1]),("valid_loss: %f; "%valid_rmse[-1]), 
-          ("Time: %f; "%round(end - start,5)))
+          ("Time: %f; "%round(end - start,5)), flush=True)
 
     if test:
         if return_pred:
@@ -373,7 +373,7 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
 
 ############# Main
 
-print('Code started', datetime.now())
+print('Code started', datetime.now(), flush=True)
 
 # base_dir = r'C:\Users\rmartinez4\Box\Personal Git\dse-capstone\seq2seq_example\data_traffic'
 base_dir = '/models-vol/'
@@ -398,7 +398,7 @@ print(' sample_size', sample_size, '\n',
       'train_valid_size', train_valid_size, '\n',
       'training_size', training_size, '\n',
       'validation_size', validation_size, '\n',
-      'test_size', test_size)
+      'test_size', test_size, flush=True)
 
 # X_train = c_time_series[:train_valid_size,:pred_size,:]
 # Y_train = c_time_series[:train_valid_size,pred_size:,:]
