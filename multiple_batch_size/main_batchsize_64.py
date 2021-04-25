@@ -357,8 +357,8 @@ write_log('#'*100)
 write_log('Code Started...')
 
 base_dir = '/models-vol3/'
-# filename = 'traffic_bayArea_station_allStations_12pts.pkl'
-filename = 'traffic_bayArea_station_400001.pkl'
+filename = 'traffic_bayArea_station_allStations_12pts.pkl'
+# filename = 'traffic_bayArea_station_400001.pkl'
 
 # read tensor
 with open(base_dir + filename, "rb") as fout:
@@ -409,7 +409,7 @@ decoder = Decoder(output_size, hidden_dim, num_layers, dropout_rate)
 model = Seq2Seq(encoder, decoder, device).to(device)
 
 model, loss, preds, min_valid_loss, test_rmse = train_model(
-    model, X, Y, learning_rate, output_steps = output_steps, batch_size = 128,
+    model, X, Y, learning_rate, output_steps = output_steps, batch_size = 64,
     train_idx = train_idx, valid_idx = valid_idx, test_idx = test_idx, test=True)
 
 # results_dict = {
