@@ -325,9 +325,10 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
         if (len(train_rmse) > 15 and np.mean(valid_rmse[-5:]) >= np.mean(valid_rmse[-10:-5])):
             break
             
-    end = time.time()       
-    print(("Epoch %d:"%(i+1)), ("Loss: %f; "%train_rmse[-1]),("valid_loss: %f; "%valid_rmse[-1]), 
-          ("Time: %f; "%round(end - start,5)), flush=True)
+        end = time.time()       
+        print(datetime.now(), (" Epoch %d:"%(i+1)), ("Loss: %f; "%train_rmse[-1]),("valid_loss: %f; "%valid_rmse[-1]), 
+              ("Time per epoch: %f; "%round(end - start,5)), flush=True)
+  
 
     if test:
         if return_pred:
