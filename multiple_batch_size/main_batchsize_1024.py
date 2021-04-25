@@ -226,8 +226,8 @@ def run_epoch_eval(model, data_generator, criterion, return_pred = False):
 
 def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx, valid_idx, test_idx, test=False, return_pred=False):
     
-    model_path = '/models-vol3/trained_model.pth'
-    results_path = '/models-vol3/results_dict.pkl'
+    model_path = '/models-vol/trained_model.pth'
+    results_path = '/models-vol/results_dict.pkl'
 
 
     ############ read checkpoint ############
@@ -341,7 +341,7 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
 
 def write_log(msg):
 
-    with open('/models-vol3/training_logger.log', "a+") as f:
+    with open('/models-vol/training_logger.log', "a+") as f:
         f.write("\n" + datetime.now().strftime("%Y/%m/%d %H:%M:%S") + " " + msg)
     f.close()   
 
@@ -355,7 +355,7 @@ print(datetime.now(), ' Code Started...', flush=True)
 write_log('#'*100)
 write_log('Code Started...')
 
-base_dir = '/models-vol3/'
+base_dir = '/models-vol/'
 # filename = 'traffic_bayArea_station_allStations_12pts.pkl'
 filename = 'traffic_bayArea_station_400001.pkl'
 
@@ -408,7 +408,7 @@ decoder = Decoder(output_size, hidden_dim, num_layers, dropout_rate)
 model = Seq2Seq(encoder, decoder, device).to(device)
 
 model, loss, preds, min_valid_loss, test_rmse = train_model(
-    model, X, Y, learning_rate, output_steps = output_steps, batch_size = 128,
+    model, X, Y, learning_rate, output_steps = output_steps, batch_size = 1024,
     train_idx = train_idx, valid_idx = valid_idx, test_idx = test_idx, test=True)
 
 # results_dict = {
