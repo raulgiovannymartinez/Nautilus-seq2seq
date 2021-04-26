@@ -187,6 +187,8 @@ def run_epoch_train(model, data_generator, model_optimizer, criterion):
         num_iter = output.size(0)
         print('num iter {}'.format(num_iter), flush=True)
         for ot in range(num_iter):
+            print('output value -----> {}'.format(output[ot]), flush=True)
+            print('target tensor value -----> {}'.format(target_tensor[ot]), flush=True)
             loss += criterion(output[ot], target_tensor[ot])
             print('loss item {}'.format(loss.item()), flush=True)
         MSE.append(loss.item()/num_iter)
@@ -218,6 +220,9 @@ def run_epoch_eval(model, data_generator, criterion, return_pred = False):
             num_iter = output.size(0)
             print('num iter {}'.format(num_iter), flush=True)
             for ot in range(num_iter):
+                print('output value -----> {}'.format(output[ot]), flush=True)
+                print('target tensor value -----> {}'.format(target_tensor[ot]), flush=True)
+
                 loss += criterion(output[ot], target_tensor[ot])
                 print('loss item {}'.format(loss.item()), flush=True)
             MSE.append(loss.item()/num_iter)
@@ -415,7 +420,7 @@ decoder = Decoder(output_size, hidden_dim, num_layers, dropout_rate)
 model = Seq2Seq(encoder, decoder, device).to(device)
 
 model, loss, preds, min_valid_loss, test_rmse = train_model(
-    model, X, Y, learning_rate, output_steps = output_steps, batch_size = 64,
+    model, X, Y, learning_rate, output_steps = output_steps, batch_size = 1024,
     train_idx = train_idx, valid_idx = valid_idx, test_idx = test_idx, test=True)
 
 # results_dict = {
