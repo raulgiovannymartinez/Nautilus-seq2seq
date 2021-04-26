@@ -185,12 +185,16 @@ def run_epoch_train(model, data_generator, model_optimizer, criterion):
         loss = 0
         output = model(input_tensor, target_tensor).reshape(target_tensor.shape)
         num_iter = output.size(0)
+        print('num iter {}'.format(num_iter), flush=True)
         for ot in range(num_iter):
             loss += criterion(output[ot], target_tensor[ot])
+            print('loss item {}'.format(loss.item()), flush=True)
         MSE.append(loss.item()/num_iter)
         loss.backward()
         model_optimizer.step()
     
+    print('MSE {}'.format(MSE), flush=True)
+
     return round(np.sqrt(np.mean(MSE)), 5)
  
 
@@ -212,13 +216,15 @@ def run_epoch_eval(model, data_generator, criterion, return_pred = False):
             output = model(input_tensor, target_tensor).reshape(target_tensor.shape)
             preds.append(output.cpu().detach().numpy())
             num_iter = output.size(0)
-            
+            print('num iter {}'.format(num_iter), flush=True)
             for ot in range(num_iter):
                 loss += criterion(output[ot], target_tensor[ot])
+                print('loss item {}'.format(loss.item()), flush=True)
             MSE.append(loss.item()/num_iter)
             
     if return_pred == True:
         preds =  np.concatenate(preds).squeeze(-1)
+        print('MSE {}'.format(MSE), flush=True)
         return round(np.sqrt(np.mean(MSE)), 5), preds
     else:
         return round(np.sqrt(np.mean(MSE)), 5)
