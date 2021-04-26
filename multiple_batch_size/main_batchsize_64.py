@@ -185,12 +185,12 @@ def run_epoch_train(model, data_generator, model_optimizer, criterion):
         loss = 0
         output = model(input_tensor, target_tensor).reshape(target_tensor.shape)
         num_iter = output.size(0)
-        print('num iter {}'.format(num_iter), flush=True)
+        # print('num iter {}'.format(num_iter), flush=True)
         for ot in range(num_iter):
-            print('output value -----> {}'.format(output[ot]), flush=True)
-            print('target tensor value -----> {}'.format(target_tensor[ot]), flush=True)
+            # print('output value -----> {}'.format(output[ot]), flush=True)
+            # print('target tensor value -----> {}'.format(target_tensor[ot]), flush=True)
             loss += criterion(output[ot], target_tensor[ot])
-            print('loss item {}'.format(loss.item()), flush=True)
+            # print('loss item {}'.format(loss.item()), flush=True)
         MSE.append(loss.item()/num_iter)
         loss.backward()
         model_optimizer.step()
@@ -218,13 +218,13 @@ def run_epoch_eval(model, data_generator, criterion, return_pred = False):
             output = model(input_tensor, target_tensor).reshape(target_tensor.shape)
             preds.append(output.cpu().detach().numpy())
             num_iter = output.size(0)
-            print('num iter {}'.format(num_iter), flush=True)
+            # print('num iter {}'.format(num_iter), flush=True)
             for ot in range(num_iter):
-                print('output value -----> {}'.format(output[ot]), flush=True)
-                print('target tensor value -----> {}'.format(target_tensor[ot]), flush=True)
+                # print('output value -----> {}'.format(output[ot]), flush=True)
+                # print('target tensor value -----> {}'.format(target_tensor[ot]), flush=True)
 
                 loss += criterion(output[ot], target_tensor[ot])
-                print('loss item {}'.format(loss.item()), flush=True)
+                # print('loss item {}'.format(loss.item()), flush=True)
             MSE.append(loss.item()/num_iter)
             
     if return_pred == True:
@@ -268,6 +268,10 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
     # Split dataset into training set, validation set and test set.
     train_rmse, train_set = [], Dataset(X, Y, train_idx, output_steps)
     valid_rmse, valid_set = [], Dataset(X, Y, valid_idx, output_steps)
+
+    print(datetime.now(), ' train set... {}'.format(train_set), flush=True)
+    print(datetime.now(), ' valid set...{}'.format(valid_set), flush=True)
+
     if test:
         test_rmse, test_set = [], Dataset(X, Y, test_idx, output_steps)
     
@@ -401,6 +405,12 @@ Y_all = c_time_series[:train_valid_size+test_size,pred_size:,:]
 X, Y, (avg, std) = scale_data(X_all, Y_all, out_pos = 0, return_current_avg_std = True)
 
 
+print('X --->'.format(X), flush=True)
+print('Y --->'.format(Y), flush=True)
+print('avg --->'.format(avg), flush=True)
+print('std --->'.format(std), flush=True)
+
+
 learning_rate = 0.01
 dropout_rate = 0.6
 num_layers = 1
@@ -414,6 +424,10 @@ output_size = 1
 train_idx = list(range(training_size))
 valid_idx = list(range(training_size, train_valid_size))
 test_idx = list(range(train_valid_size, train_valid_size + test_size))
+
+print('train_idx --->'.format(train_idx), flush=True)
+print('valid_idx --->'.format(valid_idx), flush=True)
+print('test_idx --->'.format(test_idx), flush=True)
 
 encoder = Encoder(input_size, hidden_dim, num_layers, dropout_rate)
 decoder = Decoder(output_size, hidden_dim, num_layers, dropout_rate)
