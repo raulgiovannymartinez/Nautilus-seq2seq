@@ -379,9 +379,16 @@ filename = 'traffic_bayArea_station_allStations_12pts.pkl'
 with open(base_dir + filename, "rb") as fout:
     c_time_series = pkl.load(fout)
 
+print('tensor size {}'.format(str(list(c_time_series.size()))), flush=True)
+
 sample_size = c_time_series.shape[0]
 segment_size = c_time_series.shape[1]
 pred_size = int(segment_size/2)
+
+print('Sample size {}'.format(sample_size), flush=True)
+print('segment_size {}'.format(segment_size), flush=True)
+print('pred size {}'.format(pred_size), flush=True)
+
 
 test_size = sample_size // 5
 train_valid_size = test_size * 4
@@ -402,13 +409,19 @@ write_log('sample size {}, train val size {}, train size {}, val size {}, test s
 
 X_all = c_time_series[:train_valid_size+test_size,:pred_size,:]
 Y_all = c_time_series[:train_valid_size+test_size,pred_size:,:]
+
+print('X all ---> {}'.format(X_all), flush=True)
+print('type for x all {}'.format(type(X_all)), flush=True)
+print('Y all ---> {}'.format(Y_all), flush=True)
+
 X, Y, (avg, std) = scale_data(X_all, Y_all, out_pos = 0, return_current_avg_std = True)
 
 
-print('X --->'.format(X), flush=True)
-print('Y --->'.format(Y), flush=True)
-print('avg --->'.format(avg), flush=True)
-print('std --->'.format(std), flush=True)
+print('X ---> {}'.format(X), flush=True)
+print('type for x {}'.format(type(X)), flush=True)
+print('Y ---> {}'.format(Y), flush=True)
+print('avg ---> {}'.format(avg), flush=True)
+print('std ---> {}'.format(std), flush=True)
 
 
 learning_rate = 0.01
@@ -425,9 +438,9 @@ train_idx = list(range(training_size))
 valid_idx = list(range(training_size, train_valid_size))
 test_idx = list(range(train_valid_size, train_valid_size + test_size))
 
-print('train_idx --->'.format(train_idx), flush=True)
-print('valid_idx --->'.format(valid_idx), flush=True)
-print('test_idx --->'.format(test_idx), flush=True)
+print('train_idx ---> {}'.format(train_idx), flush=True)
+print('valid_idx ---> {}'.format(valid_idx), flush=True)
+print('test_idx ---> {}'.format(test_idx), flush=True)
 
 encoder = Encoder(input_size, hidden_dim, num_layers, dropout_rate)
 decoder = Decoder(output_size, hidden_dim, num_layers, dropout_rate)
