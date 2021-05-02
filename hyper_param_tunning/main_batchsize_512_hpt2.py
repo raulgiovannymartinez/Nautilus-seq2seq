@@ -226,8 +226,8 @@ def run_epoch_eval(model, data_generator, criterion, return_pred = False):
 
 def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx, valid_idx, test_idx, dropout_rate, hidden_dim, test=False, return_pred=False):
     
-    model_path = '/models-vol/trained_model_{}_{}_{}.pth'.format(learning_rate, dropout_rate, hidden_dim)
-    results_path = '/models-vol/results_dict_{}_{}_{}.pkl'.format(learning_rate, dropout_rate, hidden_dim)
+    model_path = '/models-vol2/trained_model_{}_{}_{}.pth'.format(learning_rate, dropout_rate, hidden_dim)
+    results_path = '/models-vol2/results_dict_{}_{}_{}.pkl'.format(learning_rate, dropout_rate, hidden_dim)
 
 
     ############ read checkpoint ############
@@ -342,7 +342,7 @@ def train_model(model, X, Y, learning_rate, output_steps, batch_size, train_idx,
 
 def write_log(msg):
 
-    with open('/models-vol/training_logger.log', "a+") as f:
+    with open('/models-vol2/training_logger.log', "a+") as f:
         f.write("\n" + datetime.now().strftime("%Y/%m/%d %H:%M:%S") + " " + msg)
     f.close()   
 
@@ -356,7 +356,7 @@ print(datetime.now(), ' Code Started...', flush=True)
 write_log('#'*100)
 write_log('Code Started...')
 
-base_dir = '/models-vol/'
+base_dir = '/models-vol2/'
 # filename = 'traffic_bayArea_station_allStations_12pts.pkl'
 # filename = 'traffic_bayArea_station_400001.pkl'
 filename = 'traffic_bayArea_station_allStations_12pts_SPEED.pkl'
@@ -392,9 +392,9 @@ X, Y, (avg, std) = scale_data(X_all, Y_all, out_pos = 0, return_current_avg_std 
 
 
 
-learning_rate = [0.01, 0.001, 0.01, 0.01, 0.1]
-dropout_rate = [0.8, 0.4, 0.4, 0.2, 0.4]
-hidden_dim = [384, 192, 192, 128, 384]
+learning_rate = [0.001, 0.0001, 0.0001, 0.001, 0.01]
+dropout_rate = [0.8, 0.2, 0.4, 0.6, 0.6]
+hidden_dim = [448, 64, 384, 384, 256]
 
 num_layers = 1
 
