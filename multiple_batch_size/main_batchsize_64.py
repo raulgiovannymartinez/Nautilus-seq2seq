@@ -74,7 +74,8 @@ class Encoder(nn.Module):
         self.num_layers = num_layers
         self.hidden_dim = hidden_dim
         self.lstm = nn.LSTM(input_dim, hidden_dim, num_layers=num_layers, 
-                            bidirectional = True, dropout = dropout_rate, batch_first = True)
+                            bidirectional = True, dropout = dropout_rate, 
+                            batch_first = True)
         
     def forward(self, source):
         """
@@ -142,8 +143,12 @@ class Seq2Seq(nn.Module):
         input_length = source.size(1) 
         target_length = target_tensor.shape[1]
         output_dim = target_tensor.shape[-1]
-        encoder_hidden = (torch.zeros(self.encoder.num_layers*2, batch_size, self.encoder.hidden_dim, device=device),
-                          torch.zeros(self.encoder.num_layers*2, batch_size, self.encoder.hidden_dim, device=device))
+        
+        encoder_hidden = (torch.zeros(self.encoder.num_layers*2, 
+        	batch_size, self.encoder.hidden_dim, device=device),
+                          torch.zeros(self.encoder.num_layers*2, 
+                          	batch_size, self.encoder.hidden_dim, device=device))
+        
         encoder_output, encoder_hidden = self.encoder(source)
         
         # Concatenate the hidden states of both directions.
@@ -162,7 +167,8 @@ class Seq2Seq(nn.Module):
         decoder_hidden = concat_hidden
         
         for t in range(target_length):  
-            decoder_output, decoder_hidden = self.decoder(decoder_output, decoder_hidden)
+            decoder_output, decoder_hidden = self.decoder(decoder_output, 
+            	decoder_hidden)
             outputs[:,t:t+1,:] = decoder_output
         return outputs
 
@@ -357,8 +363,10 @@ write_log('#'*100)
 write_log('Code Started...')
 
 base_dir = '/models-vol3/'
-filename = 'traffic_bayArea_station_allStations_12pts.pkl'
+# filename = 'traffic_bayArea_station_allStations_12pts.pkl'
 # filename = 'traffic_bayArea_station_400001.pkl'
+filename = 'traffic_bayArea_station_allStations_12pts_SPEED.pkl'
+
 
 # read tensor
 with open(base_dir + filename, "rb") as fout:

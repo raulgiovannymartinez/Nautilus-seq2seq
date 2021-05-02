@@ -357,8 +357,9 @@ write_log('#'*100)
 write_log('Code Started...')
 
 base_dir = '/models-vol2/'
-filename = 'traffic_bayArea_station_allStations_12pts.pkl'
+# filename = 'traffic_bayArea_station_allStations_12pts.pkl'
 # filename = 'traffic_bayArea_station_400001.pkl'
+filename = 'traffic_bayArea_station_allStations_12pts_SPEED.pkl'
 
 # read tensor
 with open(base_dir + filename, "rb") as fout:
