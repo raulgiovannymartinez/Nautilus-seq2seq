@@ -122,3 +122,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+data-scalability-spatiotemporal/data/*
+data-scalability-spatiotemporal/*/test.npz
+data-scalability-spatiotemporal/*/train.npz
+data-scalability-spatiotemporal/*/val.npz
+
+

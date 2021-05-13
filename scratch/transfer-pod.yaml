@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: dataaccess5
+  name: dataaccess
 spec:
   containers:
   - name: mypod
@@ -13,9 +13,9 @@ spec:
       requests:
         memory: 10Gi
     volumeMounts:
-    - mountPath: /models-vol5
-      name: models-vol5
+    - mountPath: /models-vol
+      name: models-vol
   volumes:
-    - name: models-vol5
+    - name: models-vol
       persistentVolumeClaim:
-        claimName: models-vol5
+        claimName: models-vol
