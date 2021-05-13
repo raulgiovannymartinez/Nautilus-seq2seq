@@ -17,14 +17,12 @@ kubectl cp "dataaccess:models-vol/dcrnn_DR_2_h_12_64-64_lr_0.01_bs_64_0512235840
 
 kubectl cp "dataaccess:models-vol/epo8.tar" "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/25/epo8.tar" 
 
-# running predictions for 25
-
-python run_demo_pytorch.py --use_cpu_only=True --config_filename=configs/raul_test.yaml --output_filename=predictions/dcrnn_predictions_25_test.npz
 
 
 
 
 
+# data into nautilus 50
 
 
 kubectl cp "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/50/newest_adj_max_50.pkl" "dataaccess2:models-vol2/newest_adj_max_50.pkl"
@@ -38,7 +36,21 @@ kubectl cp "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/
 kubectl cp "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/raul_train.yaml" "dataaccess2:models-vol2/raul_train.yaml"
 
 
+# data from nautilus 50
 
+kubectl cp "dataaccess2:models-vol2/dcrnn_DR_2_h_12_64-64_lr_0.01_bs_64_0513000239/info.log" "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/50/dcrnn_DR_2_h_12_64-64_lr_0.01_bs_64_0513000239/info.log" 
+
+
+kubectl cp "dataaccess2:models-vol2/epo9.tar" "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/50/epo9.tar" 
+
+
+# running predictions for 50
+
+python run_demo_pytorch.py --use_cpu_only=True --config_filename=configs/raul_test.yaml --output_filename=predictions/dcrnn_predictions_50_test.npz
+
+
+
+# data into nautilus 75
 
 
 kubectl cp "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/75/newest_adj_max_75.pkl" "dataaccess3:models-vol3/newest_adj_max_75.pkl"
@@ -50,6 +62,15 @@ kubectl cp "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/
 kubectl cp "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/75/val.npz" "dataaccess3:models-vol3/val.npz"
 
 kubectl cp "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/raul_train.yaml" "dataaccess3:models-vol3/raul_train.yaml"
+
+
+
+# data from nautilus 75
+
+kubectl cp "dataaccess3:models-vol3/dcrnn_DR_2_h_12_64-64_lr_0.01_bs_64_0513001308/info.log" "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/75/dcrnn_DR_2_h_12_64-64_lr_0.01_bs_64_0513001308/info.log" 
+
+
+kubectl cp "dataaccess3:models-vol3/epo8.tar" "./Box/Personal Git/Nautilus-seq2seq/data-scalability-spatiotemporal/75/epo8.tar" 
 
 
 
