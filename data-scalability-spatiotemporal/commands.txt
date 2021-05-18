@@ -75,3 +75,9 @@ kubectl cp "dataaccess3:models-vol3/epo8.tar" "./Box/Personal Git/Nautilus-seq2s
 
 
 
+# running predictions for 75
+
+python run_demo_pytorch.py --use_cpu_only=True --config_filename=configs/raul_test.yaml --output_filename=predictions/dcrnn_predictions_75_test.npz
+
+
+
