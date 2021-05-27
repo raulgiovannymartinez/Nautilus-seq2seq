@@ -6,7 +6,7 @@ data:
   dataset_dir: dataset/
   test_batch_size: 64
   val_batch_size: 64
-  graph_pkl_filename: adj_mx/newest_adj_max_25.pkl
+  graph_pkl_filename: adj_mx/newest_adj_max.pkl
 
 model:
   cl_decay_steps: 2000

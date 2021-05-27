@@ -129,4 +129,5 @@ data-scalability-spatiotemporal/*/test.npz
 data-scalability-spatiotemporal/*/train.npz
 data-scalability-spatiotemporal/*/val.npz
 
+dashboard-prototype/*.npz
 

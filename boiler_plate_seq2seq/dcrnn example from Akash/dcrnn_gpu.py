@@ -41,9 +41,9 @@ if __name__ == '__main__':
     run()
 
 # Validate
-#vals = trainer.validate(model,data["val_loader"])
-#print("Validation Results",vals)
+# vals = trainer.validate(model,data["val_loader"])
+# print("Validation Results",vals)
 
 # Test
-#test = trainer.test(model,data["test_loader"])
-#print("Test Results",vals)
+# test = trainer.test(model,data["test_loader"])
+# print("Test Results",vals)
