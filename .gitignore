@@ -130,4 +130,5 @@ data-scalability-spatiotemporal/*/train.npz
 data-scalability-spatiotemporal/*/val.npz
 
 dashboard-prototype/*.npz
+dashboard-prototype/*.pkl
 
