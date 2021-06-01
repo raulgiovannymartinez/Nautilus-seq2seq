@@ -6,7 +6,7 @@ data:
   dataset_dir: /models-vol3
   test_batch_size: 64
   val_batch_size: 64
-  graph_pkl_filename: /models-vol3/newest_adj_max_75.pkl
+  graph_pkl_filename: /models-vol3/newest_adj_max_100.pkl
 
 model:
   cl_decay_steps: 2000
@@ -15,7 +15,7 @@ model:
   input_dim: 2 
   l1_decay: 0
   max_diffusion_step: 2
-  num_nodes: 240
+  num_nodes: 320
   num_rnn_layers: 2
   output_dim: 1
   rnn_units: 64 
