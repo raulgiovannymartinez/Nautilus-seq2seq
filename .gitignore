@@ -133,3 +133,4 @@ dashboard-prototype/*.npz
 dashboard-prototype/*.pkl
 
 boiler_plate_seq2seq/*/*.h5
+boiler_plate_seq2seq/*/*.pth
